@@ -36,9 +36,12 @@
 
       <section aria-labelledby="notes-heading">
         <h2 id="notes-heading">Your notes</h2>
-        <div class="field search-field">
-          <label for="search-input">Search notes</label>
-          <input type="search" id="search-input" placeholder="Search notes..." autocomplete="off" />
+        <div class="search-row">
+          <div class="field field-grow">
+            <label for="search-input">Search notes</label>
+            <input type="search" id="search-input" placeholder="Search notes..." autocomplete="off" />
+          </div>
+          <button type="button" id="clear-all" class="clear-btn">Clear all</button>
         </div>
         <p id="note-count">You have no notes yet.</p>
         <ul id="notes-list"></ul>
