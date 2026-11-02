@@ -144,8 +144,25 @@ button:focus-visible {
 }
 
 /* ---------- Notes section ---------- */
-.search-field {
+.search-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
   margin-bottom: 1rem;
+}
+
+.clear-btn {
+  background-color: var(--error);
+}
+
+.clear-btn:hover {
+  background-color: #991b1b;
+}
+
+.clear-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
 }
 
 #note-count {
@@ -262,5 +279,10 @@ button:focus-visible {
 
   #note-form button {
     width: 100%;
+  }
+
+  .search-row {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
