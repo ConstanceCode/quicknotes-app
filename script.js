@@ -1,18 +1,55 @@
-// QuickNotes - Task 4: validation, delete and count
+// QuickNotes - main script
 
 // ----- Select elements -----
 const form = document.querySelector("#note-form");
 const noteInput = document.querySelector("#note-input");
 const categorySelect = document.querySelector("#note-category");
 const errorMessage = document.querySelector("#error-message");
+const searchInput = document.querySelector("#search-input");
 const noteCount = document.querySelector("#note-count");
 const notesList = document.querySelector("#notes-list");
 
-// ----- Constants and state -----
+// ----- Constants -----
+const STORAGE_KEY = "quicknotes-notes";
 const MAX_LENGTH = 200;
 const CATEGORY_LABELS = { personal: "Personal", work: "Work", study: "Study" };
 
-let notes = [];
+// ----- Storage (localStorage) -----
+function saveNotes() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+  } catch (error) {
+    console.error("Could not save notes:", error);
+  }
+}
+
+function isValidNote(note) {
+  return (
+    note !== null &&
+    typeof note === "object" &&
+    typeof note.id === "number" &&
+    typeof note.text === "string" &&
+    typeof note.createdAt === "string" &&
+    Object.keys(CATEGORY_LABELS).includes(note.category)
+  );
+}
+
+function loadNotes() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved === null) {
+      return [];
+    }
+    const parsed = JSON.parse(saved);
+    return Array.isArray(parsed) ? parsed.filter(isValidNote) : [];
+  } catch (error) {
+    console.error("Could not load notes:", error);
+    return [];
+  }
+}
+
+// ----- State -----
+let notes = loadNotes();
 
 // ----- Helpers -----
 function formatDate(date) {
@@ -37,8 +74,21 @@ function updateCount() {
   }
 }
 
+// Notes whose text contains every search word (not case-sensitive)
+function getVisibleNotes() {
+  const words = searchInput.value.toLowerCase().split(/\s+/).filter(Boolean);
+  if (words.length === 0) {
+    return notes;
+  }
+  return notes.filter((note) => {
+    const text = note.text.toLowerCase();
+    return words.every((word) => text.includes(word));
+  });
+}
+
 function deleteNote(id) {
   notes = notes.filter((note) => note.id !== id);
+  saveNotes();
   render();
 }
 
@@ -76,10 +126,20 @@ function createNoteCard(note) {
 
 // Rebuild the whole list from the notes array
 function render() {
+  const visibleNotes = getVisibleNotes();
   notesList.textContent = "";
-  for (const note of notes) {
+
+  if (visibleNotes.length === 0 && searchInput.value.trim() !== "") {
+    const message = document.createElement("li");
+    message.className = "empty-message";
+    message.textContent = "No notes match your search.";
+    notesList.appendChild(message);
+  }
+
+  for (const note of visibleNotes) {
     notesList.appendChild(createNoteCard(note));
   }
+
   updateCount();
 }
 
@@ -108,10 +168,15 @@ form.addEventListener("submit", (event) => {
     createdAt: formatDate(new Date()),
   });
 
+  saveNotes();
   clearError();
   render();
   noteInput.value = "";
   noteInput.focus();
 });
 
+// ----- Search -----
+searchInput.addEventListener("input", render);
+
+// ----- Start -----
 render();
