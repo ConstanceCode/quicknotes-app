@@ -8,6 +8,7 @@ const errorMessage = document.querySelector("#error-message");
 const searchInput = document.querySelector("#search-input");
 const noteCount = document.querySelector("#note-count");
 const notesList = document.querySelector("#notes-list");
+const clearAllButton = document.querySelector("#clear-all");
 
 // ----- Constants -----
 const STORAGE_KEY = "quicknotes-notes";
@@ -141,6 +142,7 @@ function render() {
   }
 
   updateCount();
+  clearAllButton.disabled = notes.length === 0;
 }
 
 // ----- Add a note (with validation) -----
@@ -177,6 +179,18 @@ form.addEventListener("submit", (event) => {
 
 // ----- Search -----
 searchInput.addEventListener("input", render);
+
+// ----- Clear all (bonus) -----
+clearAllButton.addEventListener("click", () => {
+  if (notes.length === 0) {
+    return;
+  }
+  if (confirm("Delete all notes?")) {
+    notes = [];
+    saveNotes();
+    render();
+  }
+});
 
 // ----- Start -----
 render();
