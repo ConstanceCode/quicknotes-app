@@ -1,0 +1,266 @@
+/* ---------- Reset and variables ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary: #4f46e5;
+  --primary-dark: #4338ca;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --bg: #f3f4f6;
+  --border: #e5e7eb;
+  --personal: #0d9488; /* teal */
+  --work: #991b1b; /* dark red */
+  --study: #2563eb; /* blue */
+  --error: #b91c1c;
+}
+
+/* ---------- Page layout ---------- */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  line-height: 1.6;
+  color: var(--text);
+  background-color: var(--bg);
+}
+
+header {
+  background-color: var(--primary);
+  color: #ffffff;
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+header h1 {
+  font-size: 2.25rem;
+}
+
+header p {
+  opacity: 0.9;
+}
+
+main {
+  flex: 1;
+  width: 100%;
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+section {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+section h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+footer {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* ---------- Form (Flexbox) ---------- */
+#note-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.field-grow {
+  flex: 1;
+  min-width: 0;
+}
+
+label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  font: inherit;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25);
+}
+
+button {
+  padding: 0.65rem 1.25rem;
+  font: inherit;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: var(--primary);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+button:focus-visible {
+  outline: 3px solid rgba(79, 70, 229, 0.4);
+  outline-offset: 2px;
+}
+
+#error-message {
+  min-height: 1.5rem;
+  margin-top: 0.75rem;
+  color: var(--error);
+  font-weight: 600;
+}
+
+/* ---------- Notes section ---------- */
+.search-field {
+  margin-bottom: 1rem;
+}
+
+#note-count {
+  margin-bottom: 1rem;
+  color: var(--muted);
+}
+
+#notes-list {
+  list-style: none;
+}
+
+/* ---------- Note cards ---------- */
+.note-card {
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  background-color: #ffffff;
+  border: 1px solid var(--border);
+  border-left-width: 6px;
+  border-radius: 8px;
+}
+
+.note-text {
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+  overflow-wrap: anywhere;
+}
+
+.note-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.note-category {
+  padding: 0.1rem 0.7rem;
+  font-weight: 700;
+  color: #ffffff;
+  border-radius: 999px;
+}
+
+.note-date {
+  margin-right: auto;
+}
+
+.delete-btn {
+  padding: 0.3rem 0.8rem;
+  font-size: 0.85rem;
+  color: var(--error);
+  background-color: transparent;
+  border: 1px solid var(--error);
+}
+
+.delete-btn:hover {
+  color: #ffffff;
+  background-color: var(--error);
+  transform: none;
+}
+
+.empty-message {
+  padding: 1rem;
+  text-align: center;
+  font-style: italic;
+  color: var(--muted);
+  border: 1px dashed #d1d5db;
+  border-radius: 8px;
+}
+
+/* ---------- Category styles ---------- */
+.category-personal {
+  border-left-color: var(--personal);
+}
+
+.category-personal .note-category {
+  background-color: var(--personal);
+}
+
+.category-work {
+  border-left-color: var(--work);
+}
+
+.category-work .note-category {
+  background-color: var(--work);
+}
+
+.category-study {
+  border-left-color: var(--study);
+}
+
+.category-study .note-category {
+  background-color: var(--study);
+}
+
+/* ---------- Small screens ---------- */
+@media (max-width: 600px) {
+  header {
+    padding: 1.25rem 1rem;
+  }
+
+  header h1 {
+    font-size: 1.75rem;
+  }
+
+  section {
+    padding: 1rem;
+  }
+
+  #note-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #note-form button {
+    width: 100%;
+  }
+}
